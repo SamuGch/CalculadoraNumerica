@@ -1,6 +1,5 @@
 from sympy import symbols, lambdify
 
-
 def bisection_method(func_expr, a, b, tol, max_iter):
     x = symbols('x')
     f = lambdify(x, func_expr, modules=["numpy"])

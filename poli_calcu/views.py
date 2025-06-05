@@ -102,9 +102,12 @@ def index(request):
                 })
 
             except Exception as e:
+                generar_grafica(expr)
                 return render(request, 'poli_calcu/index.html', {
                     'form': form,
-                    'error': str(e)
+                    'error': str(e),
+                    'funcion': str(expr),
+                    'grafica_disponible': True
                 })
 
     else:

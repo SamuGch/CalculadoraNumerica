@@ -71,10 +71,18 @@
     </form>
 
     {% if error %}
-    <div id="mensaje-error" class="text-danger mt-3">
+    <div class="alert alert-danger mt-3">
         {{ error }}
     </div>
-    {% endif %}
+{% endif %}
+
+{% if grafica_disponible %}
+    <h4 class="mt-4">Gráfica del polinomio</h4>
+    <img src="/media/plot.png" alt="Gráfica del polinomio" class="img-fluid rounded border">
+    <div class="mt-4">
+        <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+    </div>
+{% endif %}
 </div>
 
 <script>
@@ -116,5 +124,7 @@
             bloqueFinal.style.display = "block";
         });
     });
+
 </script>
+
 {% endblock %}
