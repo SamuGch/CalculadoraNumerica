@@ -20,7 +20,7 @@ def bisection_method(func_expr, a, b, tol, max_iter):
             '(b)': b,
             '(x)': c,
             'f(x)': f_c,
-            'f(a)_f_(c)': producto,
+            'f(a)*f(c)': producto,
             'Error': error
         })
 
