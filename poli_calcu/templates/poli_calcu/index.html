@@ -1,0 +1,120 @@
+{% extends 'poli_calcu/base.html' %}
+{% load static %}
+{% load form_extras %}
+
+{% block content %}
+<h1 class="text-center mb-4">Calculadora de Raíces de Polinomios</h1>
+<div class="card p-4">
+    <form method="post" id="formulario-raices">
+        {% csrf_token %}
+<!-- Muestra campo para ingresar si el anterior esta correcto-->
+        <!-- 1. Función -->
+        <div id="bloque_funcion" class="mb-3">
+            {{ form.funcion.label_tag }}
+            {{ form.funcion|add_class:"form-control" }}
+            {% if form.funcion.errors %}
+                <div class="text-danger">{{ form.funcion.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!--  2. Metodo -->
+        <div id="bloque_metodo" class="mb-3" style="display: none;">
+            {{ form.metodo.label_tag }}
+            {{ form.metodo|add_class:"form-select" }}
+            {% if form.metodo.errors %}
+                <div class="text-danger">{{ form.metodo.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <!-- 3. Campos específicos -->
+        <div id="campos_biseccion" class="mb-3" style="display:none;">
+            <div class="mb-3">
+                {{ form.a.label_tag }}
+                {{ form.a|add_class:"form-control" }}
+                {% if form.a.errors %}
+                    <div class="text-danger">{{ form.a.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {{ form.b.label_tag }}
+                {{ form.b|add_class:"form-control" }}
+                {% if form.b.errors %}
+                    <div class="text-danger">{{ form.b.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="campos_newton" class="mb-3" style="display:none;">
+            <div class="mb-3">
+                {{ form.x0.label_tag }}
+                {{ form.x0|add_class:"form-control" }}
+                {% if form.x0.errors %}
+                    <div class="text-danger">{{ form.x0.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 4. Campos finales y botón -->
+        <div id="bloque_final" style="display: none;">
+            <div class="mb-3">
+                {{ form.tolerancia.label_tag }}
+                {{ form.tolerancia|add_class:"form-control" }}
+            </div>
+            <div class="mb-3">
+                {{ form.max_iter.label_tag }}
+                {{ form.max_iter|add_class:"form-control" }}
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Calcular</button>
+            </div>
+        </div>
+    </form>
+
+    {% if error %}
+    <div id="mensaje-error" class="text-danger mt-3">
+        {{ error }}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Muestra paso siguiente si anterior esta correcto
+    document.addEventListener("DOMContentLoaded", function () {
+        const funcionInput = document.getElementById("id_funcion");
+        const metodoSelect = document.getElementById("id_metodo");
+
+        const bloqueMetodo = document.getElementById("bloque_metodo");
+        const camposBiseccion = document.getElementById("campos_biseccion");
+        const camposNewton = document.getElementById("campos_newton");
+        const bloqueFinal = document.getElementById("bloque_final");
+
+        // Paso 1: validar función
+        funcionInput.addEventListener("input", function () {
+            const valor = funcionInput.value.trim();
+            const esValida = /^[0-9a-zA-Z^+\-*/(). ]+$/.test(valor);
+            if (esValida) {
+                bloqueMetodo.style.display = "block";
+            } else {
+                bloqueMetodo.style.display = "none";
+                camposBiseccion.style.display = "none";
+                camposNewton.style.display = "none";
+                bloqueFinal.style.display = "none";
+            }
+        });
+
+        // Paso 2: mostrar campos segun metodo
+        metodoSelect.addEventListener("change", function () {
+            const metodo = metodoSelect.value;
+
+            if (metodo === "biseccion") {
+                camposBiseccion.style.display = "block";
+                camposNewton.style.display = "none";
+            } else {
+                camposBiseccion.style.display = "none";
+                camposNewton.style.display = "block";
+            }
+            bloqueFinal.style.display = "block";
+        });
+    });
+</script>
+{% endblock %}

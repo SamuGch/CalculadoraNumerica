@@ -1,0 +1,47 @@
+{% extends 'poli_calcu/base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Resultado del método: {{ mensaje }}</h1>
+
+<div class="math-display">
+    Función trabajada: {{ funcion }}
+</div>
+
+{% if resultado %}
+    <h3 class="text-success">Raíz aproximada: <span class="fw-bold">{{ resultado }}</span></h3>
+{% endif %}
+
+{% if tabla_datos %}
+    <h4 class="mt-4">Tabla de Iteraciones</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="table-light">
+                <tr>
+                    {% for header in tabla_headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for fila in tabla_datos %}
+                    <tr>
+                        {% for valor in fila %}
+                            <td>{{ valor }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <p>No se generaron iteraciones.</p>
+{% endif %}
+
+
+<h4 class="mt-4">Gráfica del polinomio</h4>
+<img src="/media/plot.png" alt="Gráfica del polinomio" class="img-fluid rounded border">
+
+<div class="mt-4">
+    <a href="{% url 'index' %}" class="btn btn-primary">Volver al inicio</a>
+</div>
+{% endblock %}
